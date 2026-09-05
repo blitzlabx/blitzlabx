@@ -1,9 +1,9 @@
 name: Blitz Profile Animations
 
-on:
+"on":
+workflow_dispatch:
 schedule:
 - cron: "17 6 * * *"
-workflow_dispatch:
 push:
 branches:
 - main
@@ -18,10 +18,9 @@ cancel-in-progress: false
 jobs:
 generate:
 runs-on: ubuntu-latest
-timeout-minutes: 15
 
 steps:
-  - name: Checkout
+  - name: Checkout repository
     uses: actions/checkout@v4
 
   - name: Setup Python
@@ -33,6 +32,7 @@ steps:
     run: python -m pip install pillow
 
   - name: Generate Blitz animations
+    shell: bash
     run: |
       mkdir -p dist
 
@@ -41,40 +41,35 @@ steps:
       import math
 
       W = 1400
-      H_DIV = 54
-      H_BANNER = 180
-
       BG = (3, 8, 18, 255)
       CYAN = (0, 229, 255, 255)
-      BLUE = (40, 120, 255, 255)
       WHITE = (235, 250, 255, 255)
 
-      def glow_layer(size, draw_fn, blur=10):
-          layer = Image.new("RGBA", size, (0, 0, 0, 0))
-          draw = ImageDraw.Draw(layer)
-          draw_fn(draw)
-          return layer.filter(ImageFilter.GaussianBlur(blur))
+      def save_gif(frames, path, duration):
+          frames[0].save(
+              path,
+              save_all=True,
+              append_images=frames[1:],
+              duration=duration,
+              loop=0,
+              optimize=True
+          )
 
       def divider():
           frames = []
 
           for frame in range(48):
-              img = Image.new("RGBA", (W, H_DIV), BG)
-              glow = Image.new("RGBA", (W, H_DIV), (0, 0, 0, 0))
+              img = Image.new("RGBA", (W, 54), BG)
 
+              glow = Image.new("RGBA", (W, 54), (0, 0, 0, 0))
               gd = ImageDraw.Draw(glow)
-              y = H_DIV // 2
 
-              gd.line(
-                  [(80, y), (W - 80, y)],
-                  fill=CYAN,
-                  width=3
-              )
+              y = 27
+              gd.line((70, y, W - 70, y), fill=CYAN, width=4)
 
-              x = 80 + ((W - 160) * frame / 47)
-
+              x = 70 + ((W - 140) * frame / 47)
               gd.ellipse(
-                  [(x - 9, y - 9), (x + 9, y + 9)],
+                  (x - 9, y - 9, x + 9, y + 9),
                   fill=WHITE
               )
 
@@ -83,42 +78,33 @@ steps:
 
               d = ImageDraw.Draw(img)
               d.line(
-                  [(80, y), (W - 80, y)],
-                  fill=(0, 105, 150, 180),
+                  (70, y, W - 70, y),
+                  fill=(0, 120, 170, 220),
                   width=1
               )
-
               d.ellipse(
-                  [(x - 3, y - 3), (x + 3, y + 3)],
+                  (x - 3, y - 3, x + 3, y + 3),
                   fill=WHITE
               )
 
               frames.append(img.convert("RGB"))
 
-          frames[0].save(
-              "dist/blitz-divider.gif",
-              save_all=True,
-              append_images=frames[1:],
-              duration=55,
-              loop=0,
-              optimize=True
-          )
+          save_gif(frames, "dist/blitz-divider.gif", 55)
 
       def pulse():
           frames = []
 
           for frame in range(48):
-              img = Image.new("RGBA", (W, H_DIV), BG)
-
+              img = Image.new("RGBA", (W, 54), BG)
               points = []
-              for x in range(80, W - 80, 8):
-                  phase = (x / 85.0) + (frame / 5.0)
-                  y = H_DIV / 2 + math.sin(phase) * 8
+
+              for x in range(70, W - 70, 8):
+                  y = 27 + math.sin((x / 85.0) + frame / 5.0) * 8
                   points.append((x, y))
 
-              glow = Image.new("RGBA", (W, H_DIV), (0, 0, 0, 0))
+              glow = Image.new("RGBA", (W, 54), (0, 0, 0, 0))
               gd = ImageDraw.Draw(glow)
-              gd.line(points, fill=CYAN, width=5, joint="curve")
+              gd.line(points, fill=CYAN, width=6, joint="curve")
               glow = glow.filter(ImageFilter.GaussianBlur(10))
               img.alpha_composite(glow)
 
@@ -127,14 +113,7 @@ steps:
 
               frames.append(img.convert("RGB"))
 
-          frames[0].save(
-              "dist/blitz-pulse.gif",
-              save_all=True,
-              append_images=frames[1:],
-              duration=55,
-              loop=0,
-              optimize=True
-          )
+          save_gif(frames, "dist/blitz-pulse.gif", 55)
 
       def terminal():
           frames = []
@@ -185,39 +164,37 @@ steps:
                       fill=WHITE
                   )
 
-              cursor_x = 70 + (frame % 2) * 9
-              cursor_y = 90 + max(0, visible - 1) * 27
+              if visible:
+                  cursor_y = 90 + (visible - 1) * 27
 
-              if frame % 2 == 0:
-                  d.rectangle(
-                      (cursor_x, cursor_y, cursor_x + 7, cursor_y + 18),
-                      fill=CYAN
-                  )
+                  if frame % 2 == 0:
+                      d.rectangle(
+                          (70, cursor_y, 77, cursor_y + 18),
+                          fill=CYAN
+                      )
 
               frames.append(img.convert("RGB"))
 
-          frames[0].save(
-              "dist/blitz-terminal.gif",
-              save_all=True,
-              append_images=frames[1:],
-              duration=110,
-              loop=0,
-              optimize=True
-          )
+          save_gif(frames, "dist/blitz-terminal.gif", 100)
 
       def closing():
           frames = []
+          text = "BUILD. UNDERSTAND. IMPROVE."
 
           for frame in range(60):
-              img = Image.new("RGBA", (W, H_BANNER), BG)
+              img = Image.new("RGBA", (W, 180), BG)
 
-              pulse = int(80 + 80 * ((math.sin(frame / 6) + 1) / 2))
+              pulse = int(
+                  90 + 100 * (
+                      (math.sin(frame / 6) + 1) / 2
+                  )
+              )
 
-              glow = Image.new("RGBA", (W, H_BANNER), (0, 0, 0, 0))
+              glow = Image.new("RGBA", (W, 180), (0, 0, 0, 0))
               gd = ImageDraw.Draw(glow)
 
               gd.rounded_rectangle(
-                  (30, 25, W - 30, H_BANNER - 25),
+                  (30, 25, W - 30, 155),
                   radius=22,
                   outline=(0, 229, 255, pulse),
                   width=5
@@ -229,20 +206,18 @@ steps:
               d = ImageDraw.Draw(img)
 
               d.rounded_rectangle(
-                  (30, 25, W - 30, H_BANNER - 25),
+                  (30, 25, W - 30, 155),
                   radius=22,
                   outline=CYAN,
                   width=2
               )
-
-              text = "BUILD. UNDERSTAND. IMPROVE."
 
               bbox = d.textbbox((0, 0), text)
               tw = bbox[2] - bbox[0]
               th = bbox[3] - bbox[1]
 
               d.text(
-                  ((W - tw) / 2, (H_BANNER - th) / 2 - 4),
+                  ((W - tw) / 2, (180 - th) / 2 - 5),
                   text,
                   fill=WHITE
               )
@@ -250,20 +225,18 @@ steps:
               x = 50 + ((W - 100) * frame / 59)
 
               d.ellipse(
-                  (x - 5, H_BANNER - 48, x + 5, H_BANNER - 38),
+                  (
+                      x - 5,
+                      132,
+                      x + 5,
+                      142
+                  ),
                   fill=CYAN
               )
 
               frames.append(img.convert("RGB"))
 
-          frames[0].save(
-              "dist/blitz-closing.gif",
-              save_all=True,
-              append_images=frames[1:],
-              duration=70,
-              loop=0,
-              optimize=True
-          )
+          save_gif(frames, "dist/blitz-closing.gif", 70)
 
       divider()
       pulse()
@@ -281,10 +254,11 @@ steps:
         dist/github-snake.svg
         dist/github-snake-dark.svg?palette=github-dark
 
-  - name: Publish generated assets
-    uses: crazy-max/ghaction-github-pages@v5
+  - name: Publish profile assets
+    uses: crazy-max/ghaction-github-pages@v4
     with:
       build_dir: dist
-      target_branch: output
+      jekyll: false
+      build_branch: output
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
