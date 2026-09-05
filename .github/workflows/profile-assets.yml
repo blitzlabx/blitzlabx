@@ -1,0 +1,221 @@
+name: Generate Profile Animations
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate animated SVG assets
+        shell: bash
+        run: |
+          mkdir -p dist
+
+          cat > dist/profile-divider.svg <<'SVG'
+          <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="18" viewBox="0 0 1200 18">
+            <defs>
+              <linearGradient id="g" x1="0%" x2="100%">
+                <stop offset="0%" stop-color="#00D9FF" stop-opacity="0"/>
+                <stop offset="35%" stop-color="#00D9FF" stop-opacity=".35"/>
+                <stop offset="50%" stop-color="#E8F4FF"/>
+                <stop offset="65%" stop-color="#00D9FF" stop-opacity=".35"/>
+                <stop offset="100%" stop-color="#00D9FF" stop-opacity="0"/>
+              </linearGradient>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="3" result="blur"/>
+                <feMerge>
+                  <feMergeNode in="blur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+
+            <rect width="1200" height="18" fill="transparent"/>
+
+            <path
+              d="M0 9 H1200"
+              stroke="url(#g)"
+              stroke-width="2"
+              filter="url(#glow)"
+            />
+
+            <circle r="3" fill="#00D9FF" filter="url(#glow)">
+              <animateMotion
+                dur="3s"
+                repeatCount="indefinite"
+                path="M0 9 H1200"
+              />
+            </circle>
+
+            <circle r="2" fill="#E8F4FF" opacity=".8">
+              <animateMotion
+                dur="3s"
+                begin="1.5s"
+                repeatCount="indefinite"
+                path="M1200 9 H0"
+              />
+            </circle>
+          </svg>
+          SVG
+
+          cat > dist/profile-pulse.svg <<'SVG'
+          <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="90" viewBox="0 0 1200 90">
+            <defs>
+              <linearGradient id="line" x1="0%" x2="100%">
+                <stop offset="0%" stop-color="#00D9FF" stop-opacity="0"/>
+                <stop offset="50%" stop-color="#00D9FF"/>
+                <stop offset="100%" stop-color="#00D9FF" stop-opacity="0"/>
+              </linearGradient>
+
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="4" result="blur"/>
+                <feMerge>
+                  <feMergeNode in="blur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+
+            <path
+              d="M0 45
+                 C100 20 150 70 250 45
+                 S400 20 500 45
+                 S650 70 750 45
+                 S900 20 1000 45
+                 S1100 70 1200 45"
+              fill="none"
+              stroke="url(#line)"
+              stroke-width="2"
+              filter="url(#glow)"
+            >
+              <animate
+                attributeName="stroke-dasharray"
+                values="20 20;80 20;20 20"
+                dur="2.5s"
+                repeatCount="indefinite"
+              />
+            </path>
+
+            <circle r="4" fill="#00D9FF" filter="url(#glow)">
+              <animateMotion
+                dur="4s"
+                repeatCount="indefinite"
+                path="M0 45 C100 20 150 70 250 45 S400 20 500 45 S650 70 750 45 S900 20 1000 45 S1100 70 1200 45"
+              />
+            </circle>
+          </svg>
+          SVG
+
+          cat > dist/profile-closing.svg <<'SVG'
+          <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="180" viewBox="0 0 1200 180">
+            <defs>
+              <linearGradient id="bg" x1="0%" x2="100%">
+                <stop offset="0%" stop-color="#070B1A"/>
+                <stop offset="50%" stop-color="#0B2447"/>
+                <stop offset="100%" stop-color="#070B1A"/>
+              </linearGradient>
+
+              <linearGradient id="cyan" x1="0%" x2="100%">
+                <stop offset="0%" stop-color="#00D9FF" stop-opacity="0"/>
+                <stop offset="50%" stop-color="#00D9FF"/>
+                <stop offset="100%" stop-color="#00D9FF" stop-opacity="0"/>
+              </linearGradient>
+
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="5" result="blur"/>
+                <feMerge>
+                  <feMergeNode in="blur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+
+            <rect width="1200" height="180" rx="18" fill="url(#bg)" stroke="#00D9FF" stroke-opacity=".25"/>
+
+            <path
+              d="M100 125 H1100"
+              stroke="url(#cyan)"
+              stroke-width="2"
+              filter="url(#glow)"
+            />
+
+            <text
+              x="600"
+              y="72"
+              text-anchor="middle"
+              font-family="monospace"
+              font-size="28"
+              font-weight="700"
+              fill="#E8F4FF"
+            >
+              BUILD IT. UNDERSTAND IT. IMPROVE IT.
+            </text>
+
+            <text
+              x="600"
+              y="105"
+              text-anchor="middle"
+              font-family="monospace"
+              font-size="15"
+              fill="#00D9FF"
+            >
+              ⚡ BLITZ
+            </text>
+
+            <circle r="4" fill="#00D9FF" filter="url(#glow)">
+              <animateMotion
+                dur="3s"
+                repeatCount="indefinite"
+                path="M100 125 H1100"
+              />
+            </circle>
+
+            <circle r="4" fill="#00D9FF" filter="url(#glow)">
+              <animateMotion
+                dur="3s"
+                begin="1.5s"
+                repeatCount="indefinite"
+                path="M1100 125 H100"
+              />
+            </circle>
+
+            <rect
+              x="50"
+              y="15"
+              width="1100"
+              height="150"
+              rx="14"
+              fill="none"
+              stroke="#00D9FF"
+              stroke-opacity=".08"
+            >
+              <animate
+                attributeName="stroke-opacity"
+                values=".03;.18;.03"
+                dur="2.8s"
+                repeatCount="indefinite"
+              />
+            </rect>
+          </svg>
+          SVG
+
+      - name: Publish generated assets
+        uses: crazy-max/ghaction-github-pages@v3.1.0
+        with:
+          build_dir: dist
+          target_branch: output
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
