@@ -18,7 +18,7 @@
 
 <br/><br/>
 
-<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/profile-divider.svg" width="90%" alt=""/>
+<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/blitz-divider.gif" width="90%" alt=""/>
 
 </div>
 
@@ -47,7 +47,7 @@ I don't build just to collect technologies. I build because there's usually some
 
 <br/><br/>
 
-<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/profile-divider.svg" width="90%" alt=""/>
+<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/blitz-divider.gif" width="90%" alt=""/>
 
 </div>
 
@@ -67,7 +67,7 @@ My primary and go-to language for building software, APIs, automation, tooling, 
 
 <br/><br/>
 
-<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/profile-divider.svg" width="90%" alt=""/>
+<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/blitz-divider.gif" width="90%" alt=""/>
 
 </div>
 
@@ -102,7 +102,7 @@ My primary and go-to language for building software, APIs, automation, tooling, 
 
 <br/>
 
-<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/profile-divider.svg" width="90%" alt=""/>
+<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/blitz-divider.gif" width="90%" alt=""/>
 
 </div>
 
@@ -114,7 +114,7 @@ My primary and go-to language for building software, APIs, automation, tooling, 
 
 <br/><br/>
 
-<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/profile-divider.svg" width="90%" alt=""/>
+<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/blitz-divider.gif" width="90%" alt=""/>
 
 </div>
 
@@ -126,7 +126,7 @@ My primary and go-to language for building software, APIs, automation, tooling, 
 
 <br/><br/>
 
-<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/profile-divider.svg" width="90%" alt=""/>
+<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/blitz-divider.gif" width="90%" alt=""/>
 
 </div>
 
@@ -142,7 +142,7 @@ My primary and go-to language for building software, APIs, automation, tooling, 
 
 <br/><br/>
 
-<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/profile-divider.svg" width="90%" alt=""/>
+<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/blitz-divider.gif" width="90%" alt=""/>
 
 </div>
 
@@ -161,7 +161,7 @@ My primary and go-to language for building software, APIs, automation, tooling, 
 
 <br/>
 
-<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/profile-divider.svg" width="90%" alt=""/>
+<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/blitz-divider.gif" width="90%" alt=""/>
 
 </div>
 
@@ -181,7 +181,7 @@ My primary and go-to language for building software, APIs, automation, tooling, 
 <br/>
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/profile-divider.svg" width="90%" alt=""/>
+<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/blitz-divider.gif" width="90%" alt=""/>
 </div>
 
 ### Currently Exploring
@@ -204,7 +204,7 @@ My primary and go-to language for building software, APIs, automation, tooling, 
 
 <br/><br/>
 
-<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/profile-divider.svg" width="90%" alt=""/>
+<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/blitz-divider.gif" width="90%" alt=""/>
 
 </div>
 
@@ -216,11 +216,11 @@ My primary and go-to language for building software, APIs, automation, tooling, 
 
 <br/><br/>
 
-<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/profile-pulse.svg" width="100%" alt="Animated pulse"/>
+<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/blitz-pulse.gif" width="100%" alt="Animated pulse"/>
 
 <br/><br/>
 
-<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/profile-divider.svg" width="90%" alt=""/>
+<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/blitz-divider.gif" width="90%" alt=""/>
 
 </div>
 
@@ -239,7 +239,7 @@ My primary and go-to language for building software, APIs, automation, tooling, 
 
 <br/>
 
-<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/profile-divider.svg" width="90%" alt=""/>
+<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/blitz-divider.gif" width="90%" alt=""/>
 
 </div>
 
@@ -254,7 +254,7 @@ My primary and go-to language for building software, APIs, automation, tooling, 
 
 <br/><br/>
 
-<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/profile-closing.svg" width="100%" alt="Closing banner"/>
+<img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/blitz-closing.gif" width="100%" alt="Closing banner"/>
 
 <br/><br/>
 
