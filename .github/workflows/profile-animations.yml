@@ -1,0 +1,270 @@
+name: Blitz Profile Animations
+
+"on":
+  workflow_dispatch:
+  schedule:
+    - cron: "17 6 * * *"
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+concurrency:
+  group: blitz-profile-assets
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Pillow
+        run: python -m pip install pillow
+
+      - name: Generate Blitz animations
+        shell: bash
+        run: |
+          mkdir -p dist
+
+          cat > generate_profile_gifs.py <<'PY'
+          from PIL import Image, ImageDraw, ImageFilter, ImageFont
+          import math
+
+          W = 1400
+          BG = (3, 8, 18, 255)
+          CYAN = (0, 229, 255, 255)
+          WHITE = (235, 250, 255, 255)
+
+          # Load scalable default fonts (Pillow >= 10, available on Python 3.12 runner)
+          FONT_SM = ImageFont.load_default(size=20)
+          FONT_MD = ImageFont.load_default(size=28)
+          FONT_LG = ImageFont.load_default(size=38)
+
+          def save_gif(frames, path, duration):
+              frames[0].save(
+                  path,
+                  save_all=True,
+                  append_images=frames[1:],
+                  duration=duration,
+                  loop=0,
+              )
+
+          def divider():
+              frames = []
+
+              for frame in range(48):
+                  img = Image.new("RGBA", (W, 54), BG)
+
+                  glow = Image.new("RGBA", (W, 54), (0, 0, 0, 0))
+                  gd = ImageDraw.Draw(glow)
+
+                  y = 27
+                  gd.line((70, y, W - 70, y), fill=CYAN, width=4)
+
+                  x = 70 + ((W - 140) * frame / 47)
+                  gd.ellipse(
+                      (x - 9, y - 9, x + 9, y + 9),
+                      fill=WHITE
+                  )
+
+                  glow = glow.filter(ImageFilter.GaussianBlur(12))
+                  img.alpha_composite(glow)
+
+                  d = ImageDraw.Draw(img)
+                  d.line(
+                      (70, y, W - 70, y),
+                      fill=(0, 120, 170, 220),
+                      width=1
+                  )
+                  d.ellipse(
+                      (x - 3, y - 3, x + 3, y + 3),
+                      fill=WHITE
+                  )
+
+                  frames.append(img.convert("RGB"))
+
+              save_gif(frames, "dist/blitz-divider.gif", 55)
+
+          def pulse():
+              frames = []
+
+              for frame in range(48):
+                  img = Image.new("RGBA", (W, 54), BG)
+                  points = []
+
+                  for x in range(70, W - 70, 8):
+                      y = 27 + math.sin((x / 85.0) + frame / 5.0) * 8
+                      points.append((x, y))
+
+                  glow = Image.new("RGBA", (W, 54), (0, 0, 0, 0))
+                  gd = ImageDraw.Draw(glow)
+                  gd.line(points, fill=CYAN, width=6, joint="curve")
+                  glow = glow.filter(ImageFilter.GaussianBlur(10))
+                  img.alpha_composite(glow)
+
+                  d = ImageDraw.Draw(img)
+                  d.line(points, fill=CYAN, width=2, joint="curve")
+
+                  frames.append(img.convert("RGB"))
+
+              save_gif(frames, "dist/blitz-pulse.gif", 55)
+
+          def terminal():
+              frames = []
+
+              lines = [
+                  "> python blitz.py",
+                  "> initializing systems...",
+                  "> building infrastructure...",
+                  "> compiling ideas...",
+                  "> deployment ready.",
+              ]
+
+              for frame in range(48):
+                  img = Image.new("RGBA", (W, 260), BG)
+
+                  glow = Image.new("RGBA", (W, 260), (0, 0, 0, 0))
+                  gd = ImageDraw.Draw(glow)
+
+                  gd.rounded_rectangle(
+                      (35, 25, W - 35, 235),
+                      radius=18,
+                      outline=CYAN,
+                      width=4
+                  )
+
+                  glow = glow.filter(ImageFilter.GaussianBlur(12))
+                  img.alpha_composite(glow)
+
+                  d = ImageDraw.Draw(img)
+
+                  d.rounded_rectangle(
+                      (35, 25, W - 35, 235),
+                      radius=18,
+                      outline=(0, 130, 170, 220),
+                      width=2
+                  )
+
+                  d.ellipse((60, 50, 72, 62), fill=(255, 80, 80))
+                  d.ellipse((82, 50, 94, 62), fill=(255, 190, 60))
+                  d.ellipse((104, 50, 116, 62), fill=(70, 220, 130))
+
+                  visible = min(5, frame // 8 + 1)
+
+                  for i in range(visible):
+                      d.text(
+                          (70, 90 + i * 27),
+                          lines[i],
+                          fill=WHITE,
+                          font=FONT_MD,
+                      )
+
+                  if visible:
+                      cursor_y = 90 + (visible - 1) * 27
+
+                      if frame % 2 == 0:
+                          d.rectangle(
+                              (70, cursor_y, 77, cursor_y + 18),
+                              fill=CYAN
+                          )
+
+                  frames.append(img.convert("RGB"))
+
+              save_gif(frames, "dist/blitz-terminal.gif", 100)
+
+          def closing():
+              frames = []
+              text = "BUILD. UNDERSTAND. IMPROVE."
+
+              for frame in range(60):
+                  img = Image.new("RGBA", (W, 180), BG)
+
+                  pulse = int(
+                      90 + 100 * (
+                          (math.sin(frame / 6) + 1) / 2
+                      )
+                  )
+
+                  glow = Image.new("RGBA", (W, 180), (0, 0, 0, 0))
+                  gd = ImageDraw.Draw(glow)
+
+                  gd.rounded_rectangle(
+                      (30, 25, W - 30, 155),
+                      radius=22,
+                      outline=(0, 229, 255, pulse),
+                      width=5
+                  )
+
+                  glow = glow.filter(ImageFilter.GaussianBlur(14))
+                  img.alpha_composite(glow)
+
+                  d = ImageDraw.Draw(img)
+
+                  d.rounded_rectangle(
+                      (30, 25, W - 30, 155),
+                      radius=22,
+                      outline=CYAN,
+                      width=2
+                  )
+
+                  bbox = d.textbbox((0, 0), text, font=FONT_LG)
+                  tw = bbox[2] - bbox[0]
+                  th = bbox[3] - bbox[1]
+
+                  d.text(
+                      ((W - tw) / 2, (180 - th) / 2 - 5),
+                      text,
+                      fill=WHITE,
+                      font=FONT_LG,
+                  )
+
+                  x = 50 + ((W - 100) * frame / 59)
+
+                  d.ellipse(
+                      (
+                          x - 5,
+                          132,
+                          x + 5,
+                          142
+                      ),
+                      fill=CYAN
+                  )
+
+                  frames.append(img.convert("RGB"))
+
+              save_gif(frames, "dist/blitz-closing.gif", 70)
+
+          divider()
+          pulse()
+          terminal()
+          closing()
+          PY
+
+          python generate_profile_gifs.py
+
+      - name: Generate GitHub contribution snake
+        uses: Platane/snk/svg-only@v3
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: |
+            dist/github-snake.svg
+            dist/github-snake-dark.svg?palette=github-dark
+
+      - name: Publish profile assets
+        uses: crazy-max/ghaction-github-pages@v4
+        with:
+          build_dir: dist
+          jekyll: false
+          build_branch: output
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
