@@ -51,6 +51,10 @@ I don't build just to collect technologies. I build because there's usually some
 
 </div>
 
+<div align="center">
+  <img src="https://github-analytics-incog.vercel.app/api?username=blitzlabx&theme=github_dark" alt="GitHub Analytics" />
+</div>
+
 ### Python is my primary language
 
 <div align="center">
