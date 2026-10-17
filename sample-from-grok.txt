@@ -1,7 +1,0 @@
-Hello from Grok!
-
-This is a sample .txt file pushed to your GitHub profile README repo (blitzlabx/blitzlabx) on 2026-10-17.
-
-Just testing the GitHub integration + write permissions.
-
-- Blitz / blitzlabx
