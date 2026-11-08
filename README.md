@@ -97,7 +97,7 @@ I enjoy understanding how things work end to end: shaping an interface, designin
 ## Contribution Activity
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/blitzlabx/blitzlabx/output/github-snake-dark.svg" width="100%" alt="GitHub contribution activity snake graph" />
+  <a href="https://github.com/blitzlabx?tab=overview"><img src="https://img.shields.io/badge/VIEW%20GITHUB%20ACTIVITY-102B50?style=for-the-badge&logo=github&logoColor=53DFF2" alt="View GitHub contribution activity" /></a>
 </div>
 
 ## Let's Connect
