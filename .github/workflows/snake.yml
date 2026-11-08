@@ -1,28 +1,33 @@
-name: Snake Graph
+name: Generate contribution snake
 
 on:
+  push:
+    branches:
+      - main
   schedule:
-    - cron: "0 12 * * *"
+    - cron: "17 12 * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  snake:
+  generate:
     runs-on: ubuntu-latest
     steps:
-      - uses: Platane/snk/svg-only@v3
+      - name: Generate contribution graph
+        uses: Platane/snk/svg-only@v3
         with:
           github_user_name: blitzlabx
           outputs: |
             dist/github-snake.svg
             dist/github-snake-dark.svg?palette=github-dark
 
-      - uses: crazy-max/ghaction-github-pages@v4
+      - name: Publish graph to output branch
+        uses: crazy-max/ghaction-github-pages@v4
         with:
           target_branch: output
           build_dir: dist
           jekyll: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
